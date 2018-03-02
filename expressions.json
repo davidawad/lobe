@@ -1,0 +1,172 @@
+{
+"rasa_nlu_data" : {
+    "common_examples": [
+      {
+        "text": "hey",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "howdy",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "hey there",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "hello",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "hi",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "good morning",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "good evening",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "dear sir",
+        "intent": "greet",
+        "entities": []
+      },
+
+
+
+      {
+        "text": "yes",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "yep",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "yeah",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "indeed",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "that's right",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "ok",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "great",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "right, thank you",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "correct",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "great choice",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "sounds really good",
+        "intent": "affirm",
+        "entities": []
+      },
+
+
+
+      {
+        "text" : "What is gonna happen in court? ",
+        "intent": "court_basics",
+        "entities": []
+      },
+      {
+        "text" : "what's court like?",
+        "intent": "court_basics",
+        "entities": []
+      },
+      {
+        "text" : "Can I do anything after the trial? ",
+        "intent": "court_appeals",
+        "entities": []
+      },
+      {
+        "text" : "Can I appeal?",
+        "intent": "court_appeals",
+        "entities": []
+      },
+      {
+        "text" : "can anyone visit me in jail? ",
+        "intent": "court_jail",
+        "entities": []
+      },
+      {
+        "text" : "do i have to go to trial? ",
+        "intent": "court_trial",
+        "entities": []
+      },
+      {
+        "text" : "How will trial work? ",
+        "intent": "court_trial",
+        "entities": []
+      },
+      {
+        "text" : "I'm too young.",
+        "intent": "court_juvenile",
+        "entities": []
+      },
+      {
+        "text" : "I'm not eighteen",
+        "intent": "court_juvenile",
+        "entities": []
+      },
+      {
+        "text" : "what if I'm under eighteen?",
+        "intent": "court_juvenile",
+        "entities": []
+      },
+      {
+        "text" : "what if I'm under 18?",
+        "intent": "court_juvenile",
+        "entities": []
+      },
+      {
+        "text" : "how does bail work?",
+        "intent": "court_bail",
+        "entities": []
+      }
+    ]
+  }
+}
+
+
+
+
+

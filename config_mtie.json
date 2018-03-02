@@ -1,0 +1,12 @@
+{
+  "pipeline": "mitie",
+  "mitie_file" : "/Users/david/Projects/Bots/lobe/MITIE-models/english/total_word_feature_extractor.dat",
+  "path" : "./models",
+  "data" : "expressions.json"
+}
+
+
+
+
+
+
