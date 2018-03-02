@@ -55,6 +55,9 @@ curl --request POST --header 'content-type: application/json' -d@- --url 'localh
 }
 ```
 
+It will take a while for the model to be trained so just wait on it. 
+
+
 Then make requests using the name of the model you just created and the name of the project that will use that new model
 ```sh
 curl -X POST localhost:5000/parse \
