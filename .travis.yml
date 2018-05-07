@@ -15,9 +15,9 @@ install:
 
   - pip install coveralls
 
-  - coverage run tests.py
+  # - coverage run tests.py
 
 script:
-  - pytest tests.py # or py.test for Python versions 3.5 and below
+  - cd test && pytest
 
 after_success: coveralls
