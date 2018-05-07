@@ -5,8 +5,7 @@ import pytest
 import sys
 sys.path.append('../app')
 
-from messenger import *
-from constants import *
+from server import *
 
 #  from project import create_app, db
 #  from project.models import User
