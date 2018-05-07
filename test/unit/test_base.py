@@ -9,8 +9,6 @@ sys.path.append('../')
 from test_conf import *
 
 
-
-# FIXME this shouldn't exist, we should have separate functions to do these things
 def return_response_object(text, quick_replies=None, buttons=None):
     ret_obj = {}
     ret_obj['text'] = text

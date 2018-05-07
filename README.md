@@ -75,3 +75,8 @@ curl -X POST localhost:5000/parse \
 ## Testing
 
 All test cases are contained inside the `test` folder.
+
+
+## Style guide
+
+Follows the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
