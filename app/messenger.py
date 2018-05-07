@@ -1,22 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
 
-# Messenger API integration example
-# We assume you have:
-# * a Wit.ai bot setup (https://wit.ai/docs/quickstart)
-# * a Messenger Platform setup (https://developers.facebook.com/docs/messenger-platform/quickstart)
-# You need to `pip install the following dependencies: requests, bottle.
-#
-# 1. pip install requests bottle
-# 2. You can run this example on a cloud service provider like Heroku, Google Cloud Platform or AWS.
-#    Note that webhooks must have a valid SSL certificate, signed by a certificate authority and won't work on your localhost.
-# 3. Set your environment variables e.g. WIT_TOKEN=your_wit_token
-#                                        FB_PAGE_TOKEN=your_page_token
-#                                        FB_VERIFY_TOKEN=your_verify_token
-# 4. Run your server e.g. python messenger.py {PORT}
-# 5. Subscribe your page to the Webhooks using verify_token and `https://<your_host>/webhook` as callback URL.
-# 6. Talk to your bot on Messenger!
-
 #  from __future__ import absolute_import
 #  from __future__ import division
 #  from __future__ import print_function
@@ -105,18 +89,19 @@ def messenger_webhook():
                     # Let's forward the message to Wit /message
                     # and customize our response to the message in handle_message
                     response = client.message(msg=text, context={'session_id':fb_id})
+
                     handle_message(response=response, fb_id=fb_id)
+                    # TODO should this function return anything
     else:
         # Returned another event
         log('Received an invalid message on the facebook endpoint: ' + data)
+        # TODO return a different error code on error
+
     return 'OK', 200
 
 
 
-
-
 #TODO write something to break apart shorter replies
-
 def fb_message(sender_id, text):
     """
     Function for returning response to messenger
@@ -134,6 +119,7 @@ def fb_message(sender_id, text):
 
 
 def send_content(recipient_id, content):
+
     log("sending message to {recipient}: {content}".format(
         recipient=recipient_id,
         content=str(content)))
@@ -141,6 +127,7 @@ def send_content(recipient_id, content):
     params = {
         "access_token": FB_PAGE_TOKEN
     }
+
     headers = {
         "Content-Type": "application/json"
     }
@@ -171,7 +158,7 @@ def handle_parsed_intent(parsed_intent):
     ret_text, ret_replies, ret_buttons = 'DEFAULT MESSAGE', [], []
 
     # TODO look at intent to determine if more work is necessary
-    log('RECEIVED PARSED INTENT: ' +  str(parsed_intent))
+    log('RECEIVED PARSED INTENT: ' + str(parsed_intent))
 
     # handle greeting routine
     if parsed_intent == 'greetings':
@@ -188,7 +175,6 @@ def handle_parsed_intent(parsed_intent):
     # stitch together the return object
     # TODO cleaner way to do this setting?
     ret_obj["text"] = ret_text
-
 
     if ret_replies:
         ret_obj["quick_replies"] = ret_replies

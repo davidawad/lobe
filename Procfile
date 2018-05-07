@@ -1,1 +1,1 @@
-web: gunicorn messenger:app --log-file=-
+web: gunicorn --chdir app/ messenger:app --log-file=-

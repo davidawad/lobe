@@ -1,0 +1,23 @@
+language: python
+python:
+  # - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.6-dev"  # 3.6 development branch
+  - "3.7-dev"  # 3.7 development branch
+
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+  - pip install coveralls
+
+  - coverage run tests.py
+
+script:
+  - pytest tests.py # or py.test for Python versions 3.5 and below
+
+after_success: coveralls

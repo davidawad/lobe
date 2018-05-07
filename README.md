@@ -1,7 +1,14 @@
 # lobe
+
+[![Build Status](https://travis-ci.org/davidawad/lobe.svg?branch=master)](https://travis-ci.org/davidawad/lobe) [![Coverage Status](https://coveralls.io/repos/github/davidawad/lobe/badge.svg?branch=master)](https://coveralls.io/github/davidawad/lobe?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/9b6d24df1f5e2f05226a/maintainability)](https://codeclimate.com/github/davidawad/lobe/maintainability)
+
+
 To provide for the common defense, and promote the general welfare.
 
 lobe is powered by a few different things.
+
+## Getting Started
+
 
 ### messenger platform
 Set up messenger.py on heroku or some other platform. Make sure that facebook has subscribed your page to messenger events
@@ -55,7 +62,7 @@ curl --request POST --header 'content-type: application/json' -d@- --url 'localh
 }
 ```
 
-It will take a while for the model to be trained so just wait on it. 
+It will take a while for the model to be trained so just wait on it.
 
 
 Then make requests using the name of the model you just created and the name of the project that will use that new model
@@ -64,3 +71,7 @@ curl -X POST localhost:5000/parse \
   -d '{"q":"what is court like?", "model":"model_20180302-170041", "project":"lobe"}'
 ```
 
+
+## Testing
+
+All test cases are contained inside the `test` folder.
