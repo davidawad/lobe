@@ -4,35 +4,55 @@
 import os
 import sys
 import requests
+import logging
 import json
 
 from sys import argv
 from datetime import datetime
 from flask import Flask, request
 
-from messaging.fb_messenger import fb_messenger_router
+#  from messaging.fb_messenger import fb_messenger_router
+from messaging import fb_messenger_router
 
 from constants import *
 
 application = Flask(__name__)
 
-application.register_blueprint(fb_messenger_router, url_prefix=FB_ROUTE)
+
+application.register_blueprint(fb_messenger_router,
+                               url_prefix=FB_ROUTE)
 
 
+gunicorn_error_logger = logging.getLogger('gunicorn.error')
+application.logger.handlers.extend(gunicorn_error_logger.handlers)
+application.logger.setLevel(logging.DEBUG)
+application.logger.debug(fb_messenger_router)
 
+
+#  @application.route('/', methods=['GET'])
+#  def home():
+    #  return messaging.fb_messenger.messenger_webhook_verify()
 
 # route to the root directory
-@application.route('/')
-def home():
-    return '<p>Lobe currently has no frontend. Thanks!<p>', 200
+#  @application.route('/')
+#  def home():
+    #  application.logger.debug('FUCK ALL LIFE')
+    #  return '<p>Lobe currently has no frontend. Thanks!<p>', 200
 
 
 # will happen before every request made to lobe,
 # currently just passes it along
-@application.before_request
-def before_request():
-    return
+#  @application.before_request
+#  def before_request():
+    #  return
 
+
+#  import logging
+#  # set up gunicorn logger
+#  gunicorn_error_logger = logging.getLogger('gunicorn.error')
+#  app.logger.handlers.extend(gunicorn_error_logger.handlers)
+#  app.logger.setLevel(logging.DEBUG)
+#  app.logger.debug('this will show in the log')
 
 def log(msg):
     """

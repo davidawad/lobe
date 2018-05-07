@@ -16,7 +16,7 @@ from wit import Wit
 from flask import Flask, request, Blueprint, jsonify
 from datetime import datetime
 
-from constants import *
+#  from constants import *
 
 
 # Messenger API parameters
@@ -37,8 +37,15 @@ FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
 fb_messenger_router = Blueprint('fb_messenger', __name__)
 
 
-@fb_messenger_router.route(FB_ROUTE, methods=['GET'])
+@fb_messenger_router.route('/', methods=['GET'])
 def messenger_webhook_verify():
+
+    gunicorn_error_logger = logging.getLogger('gunicorn.error')
+    application.logger.handlers.extend(gunicorn_error_logger.handlers)
+    application.logger.setLevel(logging.DEBUG)
+    application.logger.debug('TEST LOG FROM THE VERIFY SEGMENT')
+
+
     # when the server side endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
@@ -50,7 +57,7 @@ def messenger_webhook_verify():
 
 
 
-@fb_messenger_router.route(FB_ROUTE, methods=['GET', 'POST'])
+@fb_messenger_router.route('/', methods=['POST'])
 def receive():
     """
     Handler for webhook (currently for postback and messages)
