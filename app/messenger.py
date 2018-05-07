@@ -89,7 +89,6 @@ def messenger_webhook():
                     # Let's forward the message to Wit /message
                     # and customize our response to the message in handle_message
                     response = client.message(msg=text, context={'session_id':fb_id})
-
                     handle_message(response=response, fb_id=fb_id)
                     # TODO should this function return anything
     else:
@@ -162,7 +161,7 @@ def handle_parsed_intent(parsed_intent):
 
     # handle greeting routine
     if parsed_intent == 'greetings':
-        ret_text = "Hello! My name is Lobe, I'm a robot designed to help you, but I'm not an attorney"
+        ret_text = "Hello! My name is Lobe, I'm a robot designed to help you, but I'm not an attorney! Any information I give is exclusively for entertainment purposes only."
 
     elif parsed_intent in list(intent_message_key_mappings.keys()):
         # use the mapping dict to map the input to a proper basic response
