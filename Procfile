@@ -1,1 +1,1 @@
-web: gunicorn --workers 1 --chdir app/ server:application --log-file=- --reload
+web: gunicorn --workers 1 --chdir app/ server:application --log-file=-

@@ -1,10 +1,4 @@
 #!/usr/bin/env python
-# coding:utf-8
-
-#  from __future__ import absolute_import
-#  from __future__ import division
-#  from __future__ import print_function
-#  from __future__ import unicode_literals
 
 import os
 import sys
@@ -16,7 +10,9 @@ from wit import Wit
 from flask import Flask, request, Blueprint, jsonify
 from datetime import datetime
 
-#  from constants import *
+from constants import *
+from utils import log
+import processing
 
 
 # Messenger API parameters
@@ -27,25 +23,9 @@ FB_VERIFY_TOKEN = os.environ.get('FB_VERIFY_TOKEN')
 # endpoint to send requests to
 FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
 
-# handles all I/O with facebook messenger.
-# designed to be used with a facebook page.
 
-# takes messages and sends out messages.
-# simple as that
-
-# set up blueprint for fb_messenger
-fb_messenger_router = Blueprint('fb_messenger', __name__)
-
-
-@fb_messenger_router.route('/', methods=['GET'])
-def messenger_webhook_verify():
-
-    gunicorn_error_logger = logging.getLogger('gunicorn.error')
-    application.logger.handlers.extend(gunicorn_error_logger.handlers)
-    application.logger.setLevel(logging.DEBUG)
-    application.logger.debug('TEST LOG FROM THE VERIFY SEGMENT')
-
-
+def webhook_verify():
+    log("Received verification request from fb.")
     # when the server side endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
@@ -56,14 +36,11 @@ def messenger_webhook_verify():
     return "Hello world", 200
 
 
-
-@fb_messenger_router.route('/', methods=['POST'])
-def receive():
+def receive(data):
     """
     Handler for webhook (currently for postback and messages)
     Parses out the message and bubbles it up to the processing layer
     """
-    data = request.json
 
     log("Facebook message received: " + str(data))
 
@@ -97,49 +74,48 @@ def receive():
 
                     # Let's forward the message to Wit /message
                     # and customize our response to the message in handle_message
-
-
-                    # TODO PROCESS TEXT
                     processing.handle_fb_message(text, fb_id)
 
-                    # response = client.message(msg=text, context={'session_id':fb_id})
-                    # handle_message(response=response, fb_id=fb_id)
-
-                    # TODO WHEN TEXT IS GIVEN BACK TAKE REPLY AND SEND IT OUT
-
-                    # TODO should this function return anything HERe?
     else:
         # Returned another event
         log('Received an invalid message on the facebook endpoint: ' + data)
-        # TODO more structured mechanism for this
         return 'Server Error', 500
 
     return 'OK', 200
-    pass
 
 
-
-# TODO(me@davidawad.com) write something to break apart long paragraphs into shorter replies.
-# Not sure if that should be done at the I/O level or whether it makes more sense at the processing level
-def send_text(sender_id, text):
+def send_text(send_to_id, text):
   """
-  Send out reply to a messenger user.
+  Send out message to a messenger user.
+  Just a higher level interface that only needs a string.
   """
-  data = {
-      'recipient': {'id': sender_id},
-      'message': {'text': text}
-  }
-  # Setup the query string with your PAGE TOKEN
-  qs = 'access_token=' + FB_PAGE_TOKEN
-  # Send POST request to messenger
-  resp = requests.post('https://graph.facebook.com/me/messages?' + qs,
-                       json=data)
-  return resp.content
+  log('SENDING MESSAGE: ' + str(text))
+  response_object = format_fb_message(text)
+  send_content(send_to_id, response_object)
+  return
+
+
+def format_fb_message(ret_text, ret_replies=[], ret_buttons=[]):
+    """
+    Stitch together the return object based on whatever response text has been selected.
+    Returns formatted object so that it can be passed to send_content.
+    """
+    ret_obj = {}
+
+    ret_obj["text"] = ret_text
+
+    if ret_replies:
+        ret_obj["quick_replies"] = ret_replies
+
+    if ret_buttons:
+        ret_obj["buttons"] = ret_buttons
+
+    return ret_obj
 
 
 def send_content(recipient_id, content):
     """
-    Send out messenger buttons or content to a messenger user.
+    Takes a messenger formatted object and sends it to the specified recepient
     """
     log("sending message to {recipient}: {content}".format(
         recipient=recipient_id,

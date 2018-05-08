@@ -1,55 +1,68 @@
+import os
+import sys
+import requests
+import json
+import math
+import time
+
+from sys import argv
+from wit import Wit
+from flask import Flask, request, Blueprint, jsonify
+from datetime import datetime
+
+from constants import *
+from utils import log
+
+from nlp_tools import proc_wit, proc_english
+from messaging import fb_messenger
+
 
 def handle_text_message(text):
     """
-    Takes input message text and determines the response
-    """
-    response_text = "TEXT FROM handle_text_message()"
+    Takes input message text and determines the response, gives it back to the caller
 
+    Currently basically a skeleton
+    """
+    response_text = "sample text from skeleton function"
     return response_text
 
 
-# NOTE: here 'response' is actually the message sent by the user
 def handle_fb_message(text, fb_id):
     """
-    Customizes our response to the message and sends it
+    Handler for fb messages
     """
-    log("RESPONSE: " + str(response))
 
-
-    response = client.message(msg=text, context={'session_id':fb_id})
-
-    # handle_message(response=response, fb_id=fb_id)
-
-    entities = response.get('entities')
-
-    # Checks if user's message is a greeting
-    # Otherwise we will just repeat what they sent us
-    parsed_intent = first_entity_value(entities)
+    # send message to wit
+    parsed_intent = proc_wit.send_message(text, fb_id)
 
     # handle the parsed intent and create our response
-    response_object = handle_parsed_intent(parsed_intent)
+    ret_text = handle_parsed_intent(parsed_intent)
 
     # TODO parse intent to craft message
     # use this for basic legal info
     # http://www.18thjudicialcircuitpublicdefender.com/client-information/
 
-    log('SENDING MESSAGE: ' + str(response_object))
+    # in order for our bot to be realistic,
+    # throttle slightly and send message in multiple chunks
 
-    # send message
-    #  fb_message(fb_id, text)
-    send_content(fb_id, response_object)
+    # separate message into multiple sentences.
+    sentences = proc_english.split_into_sentences(ret_text)
 
+    for _ in sentences:
+        # sleep for some amount of time that makes sense based on length of message
+        time.sleep(max((math.log(len(_)) - 3), 0))
+        fb_messenger.send_text(fb_id, _)
 
+    return
 
 
 def handle_parsed_intent(parsed_intent):
     """
-    Use the parsed intent from wit.ai and format it for fb
+    Use the parsed intent from wit.ai and determine Lobe's response.
     """
-    ret_obj = {}
-    ret_text, ret_replies, ret_buttons = 'DEFAULT MESSAGE', [], []
+    ret_text = 'DEFAULT MESSAGE'
 
-    # TODO look at intent to determine if more work is necessary
+    # look at intent to determine if more work is necessary
     log('RECEIVED PARSED INTENT: ' + str(parsed_intent))
 
     # handle greeting routine
@@ -63,17 +76,7 @@ def handle_parsed_intent(parsed_intent):
     else:
         ret_text = "I'm sorry I didn't understand that! Try again?"
 
+    return ret_text
 
-    # stitch together the return object
-    # TODO cleaner way to do this setting?
-    ret_obj["text"] = ret_text
-
-    if ret_replies:
-        ret_obj["quick_replies"] = ret_replies
-
-    if ret_buttons:
-        ret_obj["buttons"] = ret_buttons
-
-    return ret_obj
 
 

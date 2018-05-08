@@ -1,13 +1,40 @@
+import os
+import sys
+import requests
+import json
+
+from sys import argv
+from wit import Wit
+from flask import Flask, request, Blueprint, jsonify
+from datetime import datetime
+
+
 from wit import Wit
 
 from constants import *
 
-
+from utils import log
 
 # Wit.ai parameters
 WIT_TOKEN = os.environ.get('WIT_TOKEN')
 
 client = Wit(access_token=WIT_TOKEN)
+
+
+def send_message(msg, id_tag):
+    """
+    Takes a message and a unique id for wit to identify the conversation
+    returns a parsed intent value using wit's filters
+    """
+
+    response = client.message(msg=msg, context={'session_id': id_tag})
+
+    entities = response.get('entities')
+
+    # Checks if user's message is a greeting
+    parsed_intent = first_entity_value(entities)
+
+    return parsed_intent
 
 
 def first_entity_value(entities):
