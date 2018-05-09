@@ -9,6 +9,9 @@ python:
   - "3.6-dev"  # 3.6 development branch
   - "3.7-dev"  # 3.7 development branch
 
+# cache pip files between builds
+cache: pip
+
 os:
   - linux
   # - osx
@@ -22,6 +25,6 @@ install:
   - cd test && coverage run -m pytest
 
 script:
-  - cd test && pytest
+  - pytest
 
 after_success: coveralls
