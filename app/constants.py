@@ -6,7 +6,7 @@
 
 
 MESSAGING_PREFIX = '/messaging'
-FB_ROUTE = MESSAGING_PREFIX + '/fb_messenger'
+FB_ROUTE = MESSAGING_PREFIX + '/fbmessenger'
 
 # endpoint to send requests to
 FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
