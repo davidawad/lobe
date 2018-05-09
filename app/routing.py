@@ -30,6 +30,5 @@ def fb_verify():
 @routes.route(FB_ROUTE, methods=['POST'])
 def fb_post():
     log(request.json)
-
     if request.json: return fb_messenger.receive(request.json)
     return 'Incomplete Request', 400
