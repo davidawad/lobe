@@ -37,10 +37,6 @@ def test_route_delete(test_client):
     assert b'Not Allowed' in response.data
 
 
-
-
-
-
 def test_fb_message_response_null_input(test_client):
     """
     ensure that fb message webhook fails when used without data
@@ -49,9 +45,6 @@ def test_fb_message_response_null_input(test_client):
 
     assert response.status_code == 400
     assert b'Incomplete Request' in response.data
-
-
-
 
 
 def test_fb_message_response(test_client):
