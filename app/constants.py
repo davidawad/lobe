@@ -9,7 +9,7 @@ MESSAGING_PREFIX = '/messaging'
 FB_ROUTE = MESSAGING_PREFIX + '/fbmessenger'
 
 # endpoint to send requests to
-FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
+#  FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
 
 GREETING="Hello! My name is Lobe, I'm a robot designed to help you, but I'm not an attorney! Any information I give is exclusively for entertainment purposes only."
 

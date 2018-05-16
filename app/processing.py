@@ -11,49 +11,59 @@ from utils import log
 
 from nlp_tools import proc_wit, proc_english
 from messaging import fb_messenger
+from users import User, UserList
+
+USERS = UserList()
 
 
-def handle_text_message(text):
+def determine_reply(current_user: User) -> str:
     """
-    Takes input message text and determines the response, gives it back to the caller
+    Takes current user object, gathers the users most recent message, and determines the reply
+    :param User current_user: the user that sent the message
 
-    Currently basically a skeleton
-    """
-    response_text = "sample text from skeleton function"
-    return response_text
-
-
-def handle_fb_message(text, fb_id):
-    """
-    Handler for fb messages
     """
 
-    # send message to wit
-    parsed_intent = proc_wit.send_message(text, fb_id)
+    # get latest message
+    most_recent_message = current_user.messages[-1]
 
-    # handle the parsed intent and create our response
-    ret_text = handle_parsed_intent(parsed_intent)
+    # send message to wit and classify intent
+    parsed_intent = proc_wit.send_message(most_recent_message, current_user.client_id)
+
+    # handle the parsed intent and create our response with it
+    ret_text = extract_reply_from_intent(parsed_intent)
+
+    return ret_text
+
+
+def process_user_message(current_user: User) -> None:
+    """
+    procedure for new messages
+    take the last message a user sent and send response for it
+    :param User current_user: the user who sent the message
+    """
+    # TODO this could break down a bit when user sends more than one message
+
+    # add user to list of users
+    USERS.add_user(current_user)
+
+    # determine reply with latest message
+    reply_text = determine_reply(current_user)
 
     # in order for our bot to be realistic,
     # throttle slightly and send message in multiple sentences.
-    sentences = proc_english.split_into_sentences(ret_text)
+    sentences = proc_english.split_into_sentences(reply_text)
 
-    for _ in sentences:
-        # sleep for some amount of time that makes sense based on length of message
-        time.sleep(max((math.log(len(_)) - 3), 0))
-        fb_messenger.send_text(fb_id, _)
-
-    return
+    current_user.converse(sentences)
 
 
-def handle_parsed_intent(parsed_intent):
+def extract_reply_from_intent(parsed_intent):
     """
     Use the parsed intent from wit.ai and determine Lobe's response.
+    :param str parsed_intent: the intent parsed from wit
     """
     ret_text = 'DEFAULT MESSAGE'
 
     # look at intent to determine if more work is necessary
-    log('RECEIVED PARSED INTENT: ' + str(parsed_intent))
 
     # handle greeting routine
     if parsed_intent == 'greetings':

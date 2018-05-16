@@ -8,10 +8,11 @@ import os
 import json
 
 import requests
-from flask import Flask, request
+from flask import request
 
 import processing
 from utils import log
+from users import User
 
 
 # Messenger API parameters
@@ -24,6 +25,9 @@ FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
 
 
 def webhook_verify():
+    """
+    webhook verification for facebook messenger API
+    """
     log("Received verification request from fb.")
     # when the server side endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
@@ -47,16 +51,16 @@ def receive(data):
 
         log('Page data received!' + str(data['object']))
 
-        for entry in data['entry']:
+        for entry in data.get('entry', None):
 
             log('Examining entry :' + str(entry))
 
-            for messaging_event in entry["messaging"]:
+            for messaging_event in entry.get("messaging", None):
 
                 log('Examining messaging_event:' + str(messaging_event))
 
                 # get all the messages
-                if messaging_event.get('message'):
+                if messaging_event.get('message', False):
 
                     # Yay! We got a new message!
                     # We retrieve the Facebook user ID of the sender
@@ -70,9 +74,14 @@ def receive(data):
                         " from sender id: " +
                         fb_id)
 
-                    # Let's forward the message to Wit /message
-                    # and customize our response to the message in handle_message
-                    processing.handle_fb_message(text, fb_id)
+                    # create new user object, bubble it up along with their message
+                    current_user = User('fb', fb_id)
+
+                    # append latest message to user object
+                    current_user.append_message(text)
+
+                    # create or find the user object, bubble user up to processing
+                    processing.process_user_message(current_user)
 
     else:
         # Returned another event
