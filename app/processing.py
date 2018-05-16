@@ -1,16 +1,12 @@
-import os
-import sys
-import requests
-import json
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+middleware processing of messages and sending them to correct clients
+"""
 import math
 import time
 
-from sys import argv
-from wit import Wit
-from flask import Flask, request, Blueprint, jsonify
-from datetime import datetime
-
-from constants import *
+from constants import intent_message_key_mappings, GREETING
 from utils import log
 
 from nlp_tools import proc_wit, proc_english
@@ -38,14 +34,8 @@ def handle_fb_message(text, fb_id):
     # handle the parsed intent and create our response
     ret_text = handle_parsed_intent(parsed_intent)
 
-    # TODO parse intent to craft message
-    # use this for basic legal info
-    # http://www.18thjudicialcircuitpublicdefender.com/client-information/
-
     # in order for our bot to be realistic,
-    # throttle slightly and send message in multiple chunks
-
-    # separate message into multiple sentences.
+    # throttle slightly and send message in multiple sentences.
     sentences = proc_english.split_into_sentences(ret_text)
 
     for _ in sentences:
@@ -67,7 +57,7 @@ def handle_parsed_intent(parsed_intent):
 
     # handle greeting routine
     if parsed_intent == 'greetings':
-        ret_text = "Hello! My name is Lobe, I'm a robot designed to help you, but I'm not an attorney! Any information I give is exclusively for entertainment purposes only."
+        ret_text = GREETING
 
     elif parsed_intent in list(intent_message_key_mappings.keys()):
         # use the mapping dict to map the input to a proper basic response
@@ -77,6 +67,3 @@ def handle_parsed_intent(parsed_intent):
         ret_text = "I'm sorry I didn't understand that! Try again?"
 
     return ret_text
-
-
-

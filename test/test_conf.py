@@ -1,32 +1,31 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+base python module for importing other modules to be used in tests
+"""
+
+import sys
 import pytest
 
 # add parent folders to system path to import classes to testing
-import sys
 sys.path.append('../app')
 
 from server import create_app
 
 
-#  from project import create_app, db
-#  from project.models import User
-
-# creates our fixtures
-#  - Create a new Flask application
-#  - Initialize a database
-#  - …run the functional tests…
-#  - Destroy the database
-#  - Stop the Flask application
-
-
 @pytest.fixture(scope='module')
 def new_user():
-    #  user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
+    """
+    creates a new user, currently skeleton code
+    """
     return
 
 
 @pytest.fixture(scope='module')
 def test_client():
+    """
+    builds a test flask client to run functional tests against
+    """
     flask_app = create_app()
 
     # Flask provides a way to test your application by exposing the Werkzeug test Client
@@ -45,20 +44,8 @@ def test_client():
 
 @pytest.fixture(scope='module')
 def init_database():
-    # Create the database and the database table
-    #  db.create_all()
-
-    #  # Insert user data
-    #  user1 = User(email='patkennedy79@gmail.com', plaintext_password='FlaskIsAwesome')
-    #  user2 = User(email='kennedyfamilyrecipes@gmail.com', plaintext_password='PaSsWoRd')
-    #  db.session.add(user1)
-    #  db.session.add(user2)
-
-    #  # Commit the changes for the users
-    #  db.session.commit()
-
-    #  yield db  # this is where the testing happens!
-
-    #  db.drop_all()
+    """
+    initializes database structures, probably not necessary, skeleton code.
+    """
     return
 

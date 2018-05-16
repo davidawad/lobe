@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+contains some convenience functions
+"""
 import os
 import sys
 import json
@@ -11,6 +16,7 @@ DEBUG = os.environ.get('DEBUG', False)
 logger = logging.getLogger('gunicorn.error')
 
 #  application.logger.debug('this will show in the log')
+
 
 def log(msg):
     """

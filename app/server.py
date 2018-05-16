@@ -1,20 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Server base, registers routes and starts flask server
+"""
 
 import os
-import sys
-import requests
 import logging
-import json
-import traceback
-
-
-from sys import argv
-from datetime import datetime
-from flask import Flask, request, jsonify
-from time import strftime
 from logging.handlers import RotatingFileHandler
 
+from flask import Flask, request
 
 
 # user defined
@@ -22,16 +16,15 @@ from constants import *
 from utils import log
 import routing
 
-from routing import routes
-
 __author__ = "@realdavidawad"
 
 
-
-
 def create_app(config_filename=None):
+    """
+    useless app factory function
+    """
     app = Flask(__name__)
-    app.register_blueprint(routes)
+    app.register_blueprint(routing.routes)
     return app
 
 application = create_app()
@@ -39,6 +32,8 @@ application = create_app()
 # configure logger
 logger = logging.getLogger('gunicorn.error')
 
+
+# leaving these comments here for now as they will help with adding features in the future
 # will happen before every request made to lobe.
 #  @application.before_request
 #  def before_request():
@@ -76,7 +71,6 @@ logger = logging.getLogger('gunicorn.error')
     #  return "Internal Server Error", 500
 
 
-
 if __name__ == '__main__':
 
     # set logger
@@ -91,7 +85,6 @@ if __name__ == '__main__':
     # logger = logging.getLogger(__name__)
     logger.setLevel(logging.ERROR)
     logger.addHandler(handler)
-
 
     # run the server
     application.run(host = '0.0.0.0',

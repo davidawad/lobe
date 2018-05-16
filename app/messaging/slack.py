@@ -1,1 +1,3 @@
-# placeholder for slack messaging adapter
+"""
+placeholder for slack messaging adapter
+"""

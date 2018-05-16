@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-import pytest
+"""
+functional tests
+"""
 
 # add parent folders to system path to import classes to testing
 import sys
 sys.path.append('../')
 
-import json
 
 from test_conf import *
 

@@ -1,24 +1,18 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+drivers for wit.ai
+"""
 import os
-import sys
-import requests
-import json
 
-from sys import argv
-from wit import Wit
-from flask import Flask, request, Blueprint, jsonify
-from datetime import datetime
-
-
-from wit import Wit
-
-from constants import *
+import wit
 
 from utils import log
 
 # Wit.ai parameters
 WIT_TOKEN = os.environ.get('WIT_TOKEN')
 
-client = Wit(access_token=WIT_TOKEN)
+client = wit.Wit(access_token=WIT_TOKEN)
 
 
 def send_message(msg, id_tag):
@@ -49,8 +43,10 @@ def first_entity_value(entities):
         log("Entities object is none")
         return None
 
-    # we can have any intent here so use a list comp to find the highest confidence, of all possible intents that wit could return to us
-    largest_confidence_per_entity = [ max(entities[entity], key=lambda x: x['confidence']) for entity in list(entities.keys())]
+    # we can have any intent here
+    # so use a list comp to find the highest confidence,
+    # of all possible intents that wit could return to us
+    largest_confidence_per_entity = [max(entities[entity], key=lambda x: x['confidence']) for entity in list(entities.keys())]
 
     log('largest confidence entities: ' + str(largest_confidence_per_entity))
 
@@ -76,10 +72,3 @@ def first_entity_value(entities):
     log('returning parsed intent: ' + str(ret))
 
     return ret
-
-
-
-
-
-
-

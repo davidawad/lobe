@@ -1,18 +1,17 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+facebook messenger adapter
+"""
 
 import os
-import sys
-import requests
 import json
 
-from sys import argv
-from wit import Wit
-from flask import Flask, request, Blueprint, jsonify
-from datetime import datetime
+import requests
+from flask import Flask, request
 
-from constants import *
-from utils import log
 import processing
+from utils import log
 
 
 # Messenger API parameters
@@ -62,15 +61,14 @@ def receive(data):
                     # Yay! We got a new message!
                     # We retrieve the Facebook user ID of the sender
                     fb_id = messaging_event['sender']['id']
-                    recipient_id = messaging_event["recipient"]["id"]
 
                     # We retrieve the message content
                     text = messaging_event["message"]["text"]
 
                     log("Received message: " +
-                            text +
-                            " from sender id: " +
-                            fb_id)
+                        text +
+                        " from sender id: " +
+                        fb_id)
 
                     # Let's forward the message to Wit /message
                     # and customize our response to the message in handle_message
@@ -85,21 +83,27 @@ def receive(data):
 
 
 def send_text(send_to_id, text):
-  """
-  Send out message to a messenger user.
-  Just a higher level interface that only needs a string.
-  """
-  log('SENDING MESSAGE: ' + str(text))
-  response_object = format_fb_message(text)
-  send_content(send_to_id, response_object)
-  return
+    """
+    Send out message to a messenger user.
+    Just a higher level interface that only needs a string.
+    """
+    log('SENDING MESSAGE: ' + str(text))
+    response_object = format_message(text)
+    send_content(send_to_id, response_object)
+    return
 
 
-def format_fb_message(ret_text, ret_replies=[], ret_buttons=[]):
+def format_message(ret_text, ret_replies=None, ret_buttons=None):
     """
     Stitch together the return object based on whatever response text has been selected.
     Returns formatted object so that it can be passed to send_content.
     """
+    if not ret_replies:
+        ret_replies = []
+
+    if not ret_buttons:
+        ret_buttons = []
+
     ret_obj = {}
 
     ret_obj["text"] = ret_text
@@ -137,11 +141,10 @@ def send_content(recipient_id, content):
         "message": content
     })
 
-    r = requests.post(FB_MESSENGER_ENDPOINT,
-                        params=params,
-                        headers=headers,
-                        data=data)
+    request_object = requests.post(FB_MESSENGER_ENDPOINT,
+                                   params=params,
+                                   headers=headers,
+                                   data=data)
 
-    if r.status_code != 200:
-        log(r.status_code)
-        log(r)
+    if request_object.status_code != 200:
+        log(request_object)

@@ -11,6 +11,7 @@ FB_ROUTE = MESSAGING_PREFIX + '/fbmessenger'
 # endpoint to send requests to
 FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages"
 
+GREETING="Hello! My name is Lobe, I'm a robot designed to help you, but I'm not an attorney! Any information I give is exclusively for entertainment purposes only."
 
 FIRST_APPEARANCE = "You will appear before a judge within 24 hours of your arrest if you cannot post the bail in the bail schedule amount set by the chief judge of the 18th Judicial Circuit. Before the Public Defender may represent you, the court must make an inquiry into your finances and appoint the Public Defender’s Office to serve as your legal counsel. The judge will ask if you want to have a lawyer present and whether you need a court-appointed lawyer because you are unable to afford to hire one. The judge will advise you of your charge or charges. The judge will decide if the police had a legally sufficient reason to arrest you, known as probable cause."
 

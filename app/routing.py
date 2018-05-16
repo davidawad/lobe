@@ -1,22 +1,22 @@
-import os
-import sys
-import json
-import logging
-import requests
+#!/usr/bin/env python
 
-from sys import argv
-from datetime import datetime
-from flask import Flask, request
+"""
+routing for lobe requests
+"""
+
+
+from flask import request
 
 from messaging import fb_messenger
 
-from constants import *
+from constants import FB_ROUTE
 from utils import *
 
 from flask import Blueprint, render_template, abort
 
 routes = Blueprint('simple_page', __name__,
-                        template_folder='templates')
+                   template_folder='templates')
+
 
 @routes.route('/', methods=['GET'])
 def root():
@@ -26,6 +26,7 @@ def root():
 @routes.route(FB_ROUTE, methods=['GET'])
 def fb_verify():
     return fb_messenger.webhook_verify()
+
 
 @routes.route(FB_ROUTE, methods=['POST'])
 def fb_post():
