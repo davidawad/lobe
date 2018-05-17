@@ -4,6 +4,7 @@
 import math
 import time
 
+import utils
 from messaging import fb_messenger
 
 
@@ -23,6 +24,11 @@ class User:  # pylint: disable=too-few-public-methods
         """
         self.client = client
         self.client_id = client_id
+
+        self.lat = None
+        self.long = None
+        # lobe assumes his clients are all in the US
+        self.state = None  # NJ for example
         # create array to track our messages
         self.messages = []
 
@@ -69,6 +75,22 @@ class User:  # pylint: disable=too-few-public-methods
         """
         if self.client == 'fb':
             fb_messenger.send_text(self.client_id, text)
+
+    def request_location(self) -> None:
+        """
+        requests location of user
+        """
+        if self.client == 'fb':
+            fb_messenger.request_location(self.client_id)
+
+    def add_coordinates(self, lat, long) -> None:
+        """
+        sets latitude and longitude of user, and then determines what US state the user is in
+        """
+        self.lat = lat
+        self.long = long
+
+        self.state = utils.find_state_from_coords(lat, long)
 
 
 class UserList:
