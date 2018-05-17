@@ -46,6 +46,13 @@ def process_user_message(current_user: User) -> None:
     # add user to list of users
     USERS.add_user(current_user)
 
+    most_recent_message = current_user.messages[-1]
+
+    if most_recent_message == 'TEST':
+        # debugging mode, send request for location
+        current_user.request_location()
+        return
+
     # determine reply with latest message
     reply_text = determine_reply(current_user)
 
