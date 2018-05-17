@@ -197,3 +197,4 @@ def send_content(recipient_id, content):
 
     if request_object.status_code != 200:
         log(request_object)
+        log(request_object.json())
