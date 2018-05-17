@@ -66,6 +66,38 @@ def receive(data):
                     # We retrieve the Facebook user ID of the sender
                     fb_id = messaging_event['sender']['id']
 
+                    # create new user object, bubble it up along with their message
+                    current_user = User('fb', fb_id)
+
+                    message = messaging_event.get('message')
+                    #  attachments = message.get('attachments', None)
+
+                    coords = [m.get("attachments", {}).get("payload", {}).get("coords") for m in [message]][0]
+
+                    print("COORDS")
+                    print(coords)
+                    log(coords)
+
+
+
+                    #  attachments = None
+                    #  payload = None
+                    #  coords = None
+
+                    #  if attachments:
+                        #  payload = attachments.get('payload', None)
+
+                    #  if payload:
+                        #  coords = attachments.get('coordinates', None)
+
+                    if coords:
+                        print("ADDING COORDINATES")
+                        coords = attachments['payload']['coordinates']
+                        print(coords)
+                        lat = coords["lat"]
+                        long = coords["long"]
+                        current_user.add_coordinates(lat, long)
+
                     # We retrieve the message content
                     text = messaging_event["message"]["text"]
 
@@ -73,9 +105,6 @@ def receive(data):
                         text +
                         " from sender id: " +
                         fb_id)
-
-                    # create new user object, bubble it up along with their message
-                    current_user = User('fb', fb_id)
 
                     # append latest message to user object
                     current_user.append_message(text)
@@ -91,15 +120,26 @@ def receive(data):
     return 'OK', 200
 
 
+def request_location(fb_id):
+    """
+    Sends a request for location to facebook using the fb_id
+    """
+
+    # used to request location in messenger
+    # https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies#locations
+    location_request_object = {"content_type": "location"}
+
+    response_object = format_message('', location_request_object)
+    send_content(fb_id, response_object)
+
+
 def send_text(send_to_id, text):
     """
     Send out message to a messenger user.
     Just a higher level interface that only needs a string.
     """
-    log('SENDING MESSAGE: ' + str(text))
     response_object = format_message(text)
     send_content(send_to_id, response_object)
-    return
 
 
 def format_message(ret_text, ret_replies=None, ret_buttons=None):
@@ -130,7 +170,7 @@ def send_content(recipient_id, content):
     """
     Takes a messenger formatted object and sends it to the specified recepient
     """
-    log("sending message to {recipient}: {content}".format(
+    log("Sending message to {recipient}: {content}".format(
         recipient=recipient_id,
         content=str(content)))
 
