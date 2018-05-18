@@ -170,10 +170,6 @@ def send_content(recipient_id, content):
     """
     Takes a messenger formatted object and sends it to the specified recepient
     """
-    log("Sending message to {recipient}: {content}".format(
-        recipient=recipient_id,
-        content=str(content)))
-
     params = {
         "access_token": FB_PAGE_TOKEN
     }
@@ -189,6 +185,10 @@ def send_content(recipient_id, content):
         },
         "message": content
     })
+
+    log("Sending message to {recipient}: {data}".format(
+        recipient=recipient_id,
+        data=str(data)))
 
     request_object = requests.post(FB_MESSENGER_ENDPOINT,
                                    params=params,
