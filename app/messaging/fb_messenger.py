@@ -62,7 +62,6 @@ def receive(data):
                 # get all the messages
                 if messaging_event.get('message', False):
 
-                    # Yay! We got a new message!
                     # We retrieve the Facebook user ID of the sender
                     fb_id = messaging_event['sender']['id']
 
@@ -127,9 +126,11 @@ def request_location(fb_id):
 
     # used to request location in messenger
     # https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies#locations
-    location_request_object = {"content_type": "location"}
+    location_request_object = [{"content_type": "location"}]
 
-    response_object = format_message('What state are you in? Share your location?', location_request_object)
+    response_object = format_message('What state are you in? Share your location?',
+                                     location_request_object)
+
     send_content(fb_id, response_object)
 
 
