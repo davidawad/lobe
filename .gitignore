@@ -7,6 +7,7 @@ MITIE-models
 models
 container_data
 
+test/test_notes.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
