@@ -1,3 +1,6 @@
+
+
+
 all:
 		docker build -t lobe .
 
