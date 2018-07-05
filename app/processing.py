@@ -63,6 +63,7 @@ def process_user_message(current_user: User) -> None:
         current_user.send_text("HELLO MASTER.")
         for user in USERS.users:
             current_user.send_text(str(user))
+            current_user.send_text(str(user.client_id))
         return
 
     # determine reply with latest message
