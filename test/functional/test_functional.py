@@ -56,22 +56,65 @@ def test_fb_message_response(test_client):
     data_segment = {
         "object": "page",
         "entry": [{
-                "id": "779879168810137",
-                "time": 1525712604698,
-                "messaging": [{
-                        "sender": {
-                                "id": "1019000991512235"
-                        },
-                        "recipient": {
-                                "id": "779879168810137"
-                        },
-                        "timestamp": 1525712604506,
-                        "message": {
-                                "mid": "mid.$cAALFS4nhWAlpbNQVWljO47fxUCdE",
-                                "seq": 1369896,
-                                "text": "hi"
+            "id": "779879168810137",
+            "time": 1525712604698,
+            "messaging": [{
+                "sender": {
+                    "id": "1019000991512235"
+                },
+                "recipient": {
+                    "id": "779879168810137"
+                },
+                "timestamp": 1525712604506,
+                "message": {
+                    "mid": "mid.$blahblahblahfacebooknonsense",
+                    "seq": 1369896,
+                    "text": "hi"
+                }
+            }]
+        }]
+    }
+
+    response = test_client.post('/messaging/fbmessenger', json=data_segment)
+
+    assert response.status_code == 200
+    assert b'OK' in response.data
+
+
+def test_fb_message_location_response(test_client):
+    """
+    ensure that fb webhook registers successfully
+    """
+    data_segment = {
+        "object": "page",
+        "entry": [{
+            "id": "779879168810137",
+            "time": 1525712604698,
+            "messaging": [{
+                "sender": {
+                    "id": "1019000991512235"
+                },
+                "recipient": {
+                    "id": "779879168810137"
+                },
+                "timestamp": 1525712604506,
+                "message": {
+                    "mid": "mid.$blahblahblahfacebooknonsense",
+                    "seq": 1369896,
+                    "text": "hi",
+                    "attachments": [{
+                        'title': "David's Location",
+                        'url': 'https://l.facebook.com/l.php?u=unimportantlink',
+                        'type': 'location',
+                        'payload': {
+                            'coordinates': {
+                                'lat': 40.5334368,
+                                'long': -74.5292431
+                            }
                         }
-                }]
+                    }]
+                }
+            }]
         }]
     }
 

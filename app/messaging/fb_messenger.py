@@ -65,35 +65,22 @@ def receive(data):
                     # We retrieve the Facebook user ID of the sender
                     fb_id = messaging_event['sender']['id']
 
-                    # create new user object, bubble it up along with their message
-                    current_user = User('fb', fb_id)
+                    # check if user object is in current list, if not add them
+                    current_user = processing.USERS.find_user(fb_id)
 
-                    message = messaging_event.get('message')
-                    #  attachments = message.get('attachments', None)
+                    if not current_user:
+                        current_user = User('fb', fb_id)
 
-                    coords = [m.get("attachments", {}).get("payload", {}).get("coords") for m in [message]][0]
+                    lat, long = extract_coords_from_messaging_event(messaging_event)
 
-                    print("COORDS")
-                    print(coords)
-                    log(coords)
+                    if lat:
 
-                    #  attachments = None
-                    #  payload = None
-                    #  coords = None
-
-                    #  if attachments:
-                        #  payload = attachments.get('payload', None)
-
-                    #  if payload:
-                        #  coords = attachments.get('coordinates', None)
-
-                    if coords:
-                        print("ADDING COORDINATES")
-                        coords = attachments['payload']['coordinates']
-                        print(coords)
-                        lat = coords["lat"]
-                        long = coords["long"]
                         current_user.add_coordinates(lat, long)
+
+                        print("USER IN STATE : " + current_user.state)
+
+                        processing.user_location_update(current_user)
+                        return
 
                     # We retrieve the message content
                     text = messaging_event["message"]["text"]
@@ -117,7 +104,34 @@ def receive(data):
     return 'OK', 200
 
 
-def request_location(fb_id):
+def extract_coords_from_messaging_event(messaging_event):
+    """
+    extracts the coordinates from a messsaging event object
+    returns lat, long
+    """
+    message = messaging_event.get('message', {})
+
+    attachments = message.get('attachments', {})
+
+    if len(attachments) < 1:
+        return None, None
+
+    location_attachment = attachments[0]
+
+    payload = location_attachment.get('payload', {})
+
+    coords = payload.get('coordinates', {})
+
+    lat = coords.get('lat', None)
+    long = coords.get('long', None)
+
+    lat = int(lat)
+    long = int(long)
+
+    return lat, long
+
+
+def request_location(fb_id: str):
     """
     Sends a request for location to facebook using the fb_id
     """
@@ -126,7 +140,9 @@ def request_location(fb_id):
     # https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies#locations
     location_request_object = [{"content_type": "location"}]
 
-    response_object = format_message('What state are you in? Share your location?',
+    location_prompt = 'What state are you in? Share your location?'
+
+    response_object = format_message(location_prompt,
                                      location_request_object)
 
     send_content(fb_id, response_object)
@@ -165,7 +181,7 @@ def format_message(ret_text, ret_replies=None, ret_buttons=None):
     return ret_obj
 
 
-def send_content(recipient_id, content):
+def send_content(recipient_id :str, content):
     """
     Takes a messenger formatted object and sends it to the specified recepient
     """

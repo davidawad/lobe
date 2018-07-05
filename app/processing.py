@@ -42,7 +42,6 @@ def process_user_message(current_user: User) -> None:
     :param User current_user: the user who sent the message
     """
     # TODO this could break down a bit when user sends more than one message
-
     # add user to list of users
     USERS.add_user(current_user)
 
@@ -51,6 +50,13 @@ def process_user_message(current_user: User) -> None:
     if most_recent_message == 'TEST':
         # debugging mode, send request for location
         current_user.request_location()
+        return
+
+    if most_recent_message == 'STATUS':
+        # TODO make bot give status report
+        # debugging mode, send request for location
+        current_user.send_text("HELLO MASTER.")
+        current_user.send_text(str(USERS))
         return
 
     # determine reply with latest message
@@ -77,6 +83,7 @@ def extract_reply_from_intent(parsed_intent):
         ret_text = GREETING
 
     elif parsed_intent in list(intent_message_key_mappings.keys()):
+        # TODO use the intent to determine if we need state laws to answer the question
         # use the mapping dict to map the input to a proper basic response
         ret_text = intent_message_key_mappings.get(parsed_intent)
 
@@ -84,3 +91,13 @@ def extract_reply_from_intent(parsed_intent):
         ret_text = "I'm sorry I didn't understand that! Try again?"
 
     return ret_text
+
+
+def user_location_update(user):
+    """
+    this routine defines what is done after the user passes a location
+    """
+    # reply to user with the state they're in
+    response = 'Okay! So you live in ' + user.state + '.'
+    response += 'What questions do you have?'
+    user.send_text(response)

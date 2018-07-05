@@ -51,7 +51,3 @@ def find_state_from_coords(lat, long) -> str:
 
         return city
 
-
-
-
-
