@@ -80,7 +80,7 @@ def receive(data):
                         print("USER IN STATE : " + current_user.state)
 
                         processing.user_location_update(current_user)
-                        return
+                        break
 
                     # We retrieve the message content
                     text = messaging_event["message"]["text"]
