@@ -126,6 +126,9 @@ class UserList:
             return
         self.users.remove(user_object)
 
+    def reset(self) -> None:
+        self.users = []
+
 
 
 
