@@ -80,21 +80,21 @@ def receive(data):
                         print("USER IN STATE : " + current_user.state)
 
                         processing.user_location_update(current_user)
-                        break
 
-                    # We retrieve the message content
-                    text = messaging_event["message"]["text"]
+                    else:
+                        # We retrieve the message content
+                        text = messaging_event["message"]["text"]
 
-                    log("Received message: " +
-                        text +
-                        " from sender id: " +
-                        fb_id)
+                        log("Received message: " +
+                            text +
+                            " from sender id: " +
+                            fb_id)
 
-                    # append latest message to user object
-                    current_user.append_message(text)
+                        # append latest message to user object
+                        current_user.append_message(text)
 
-                    # create or find the user object, bubble user up to processing
-                    processing.process_user_message(current_user)
+                        # create or find the user object, bubble user up to processing
+                        processing.process_user_message(current_user)
 
     else:
         # Returned another event
