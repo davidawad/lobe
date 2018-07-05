@@ -61,7 +61,8 @@ def process_user_message(current_user: User) -> None:
         # TODO make bot give status report
         # debugging mode, send request for location
         current_user.send_text("HELLO MASTER.")
-        current_user.send_text(str(USERS))
+        for user in USERS.users:
+            current_user.send_text(str(user))
         return
 
     # determine reply with latest message
