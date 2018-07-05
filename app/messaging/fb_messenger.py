@@ -77,8 +77,6 @@ def receive(data):
                     print(coords)
                     log(coords)
 
-
-
                     #  attachments = None
                     #  payload = None
                     #  coords = None
