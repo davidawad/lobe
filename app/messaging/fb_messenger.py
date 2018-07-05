@@ -39,7 +39,7 @@ def webhook_verify():
     return "Hello world", 200
 
 
-def receive(data):
+def receive(data: dict):
     """
     Handler for webhook (currently for postback and messages)
     Parses out the message and bubbles it up to the processing layer
@@ -104,7 +104,7 @@ def receive(data):
     return 'OK', 200
 
 
-def extract_coords_from_messaging_event(messaging_event):
+def extract_coords_from_messaging_event(messaging_event: dict):
     """
     extracts the coordinates from a messsaging event object
     returns lat, long
@@ -148,7 +148,7 @@ def request_location(fb_id: str):
     send_content(fb_id, response_object)
 
 
-def send_text(send_to_id, text):
+def send_text(send_to_id: str, text: str):
     """
     Send out message to a messenger user.
     Just a higher level interface that only needs a string.
@@ -157,7 +157,7 @@ def send_text(send_to_id, text):
     send_content(send_to_id, response_object)
 
 
-def format_message(ret_text, ret_replies=None, ret_buttons=None):
+def format_message(ret_text: str, ret_replies=None, ret_buttons=None):
     """
     Stitch together the return object based on whatever response text has been selected.
     Returns formatted object so that it can be passed to send_content.
@@ -181,7 +181,7 @@ def format_message(ret_text, ret_replies=None, ret_buttons=None):
     return ret_obj
 
 
-def send_content(recipient_id :str, content):
+def send_content(recipient_id: str, content):
     """
     Takes a messenger formatted object and sends it to the specified recepient
     """

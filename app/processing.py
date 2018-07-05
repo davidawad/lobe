@@ -47,6 +47,11 @@ def process_user_message(current_user: User) -> None:
 
     most_recent_message = current_user.messages[-1]
 
+    if most_recent_message == 'RESET':
+        # debugging mode, send request for location
+        USERS = UserList()
+        return
+
     if most_recent_message == 'TEST':
         # debugging mode, send request for location
         current_user.request_location()
