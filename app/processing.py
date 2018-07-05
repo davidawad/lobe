@@ -47,6 +47,8 @@ def process_user_message(current_user: User) -> None:
 
     most_recent_message = current_user.messages[-1]
 
+    # TODO make sure user has accepted "license agreement" first
+
     if most_recent_message == 'RESET':
         # debugging mode, send request for location
         USERS.reset()
