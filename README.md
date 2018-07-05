@@ -79,4 +79,7 @@ All test cases are contained inside the `test` folder.
 
 ## Style guide
 
-Follows the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+This project generally follows the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+
+
+A labor of lobe by [david awad](https://davidawad.com).
