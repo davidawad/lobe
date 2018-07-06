@@ -6,7 +6,10 @@ middleware processing of messages and sending them to correct clients
 import math
 import time
 
+
+import utils
 from constants import intent_message_key_mappings, GREETING
+
 from utils import log
 
 from nlp_tools import proc_wit, proc_english
