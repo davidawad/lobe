@@ -8,11 +8,14 @@ import json
 import logging
 
 from uszipcode import ZipcodeSearchEngine
+import requests
 
 DEBUG = os.environ.get('DEBUG', False)
 
 
 logger = logging.getLogger('gunicorn.error')
+
+CHASE_ENDPOINT = os.environ.get('CHASE_ENDPOINT')
 
 #  application.logger.debug('this will show in the log')
 
@@ -51,3 +54,7 @@ def find_state_from_coords(lat, long) -> str:
 
         return city
 
+
+def chase_lookup(**kwargs):
+    r = requests.get(CHASE_ENDPOINT, json=kwargs)
+    return r.json()

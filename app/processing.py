@@ -30,7 +30,7 @@ def determine_reply(current_user: User) -> str:
     parsed_intent = proc_wit.send_message(most_recent_message, current_user.client_id)
 
     # handle the parsed intent and create our response with it
-    ret_text = extract_reply_from_intent(parsed_intent)
+    ret_text = determine_reply_from_intent(parsed_intent)
 
     return ret_text
 
@@ -54,10 +54,22 @@ def process_user_message(current_user: User) -> None:
         USERS.reset()
         return
 
-    if most_recent_message == 'TEST':
+    if most_recent_message == 'LOCATION':
         # debugging mode, send request for location
         current_user.request_location()
         return
+
+    if 'TEST' in most_recent_message:
+        # debugging mode, send request for location
+        query = most_recent_message.split(' ')[1]
+
+        # ask the intern to figure it out.
+        laws = utils.chase_lookup(query, current_user.state)
+
+        current_user.send_text(str(laws))
+
+        return
+
 
     if most_recent_message == 'STATUS':
         # TODO make bot give status report
@@ -78,7 +90,7 @@ def process_user_message(current_user: User) -> None:
     current_user.converse(sentences)
 
 
-def extract_reply_from_intent(parsed_intent):
+def determine_reply_from_intent(parsed_intent):
     """
     Use the parsed intent from wit.ai and determine Lobe's response.
     :param str parsed_intent: the intent parsed from wit
@@ -108,5 +120,5 @@ def user_location_update(user):
     """
     # reply to user with the state they're in
     response = 'Okay! So you live in ' + user.state + '.'
-    response += 'What questions do you have?'
+    response += ' What questions do you have?'
     user.send_text(response)
