@@ -67,13 +67,12 @@ def process_user_message(current_user: User) -> None:
         query = most_recent_message.split(' ')[1]
 
         # ask the intern to figure it out.
-        laws = utils.chase_lookup('query'=query,
-                                  'state'=current_user.state)
+        laws = utils.chase_lookup(query=query,
+                                  state=current_user.state)
 
         current_user.send_text(str(laws))
 
         return
-
 
     if most_recent_message == 'STATUS':
         # TODO make bot give status report
