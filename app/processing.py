@@ -70,6 +70,9 @@ def process_user_message(current_user: User) -> None:
         laws = utils.chase_lookup(query=query,
                                   state=current_user.state)
 
+        print(laws.keys())
+        current_user.send_text(laws.keys())
+
         current_user.send_text(str(laws[0]))
 
         return
