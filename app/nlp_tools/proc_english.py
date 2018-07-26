@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-
 """
 This function can split the entire text of Huckleberry Finn into sentences in about 0.1 seconds
 and handles many of the more painful edge cases that make sentence parsing non-trivial.
 
-e.g. 'Mr. John Johnson Jr. was born in the U.S.A but earned his Ph.D. in Israel before joining Nike Inc. as an engineer. He also worked at craigslist.org as a business analyst.'
+e.g. 'Mr. John Johnson Jr. was born in the U.S.A but earned his Ph.D. in Israel before joining Nike Inc. as an engineer.'
 
 from here: https://stackoverflow.com/a/31505798
 """
@@ -20,7 +18,11 @@ starters = "(Mr|Mrs|Ms|Dr|He\s|She\s|It\s|They\s|Their\s|Our\s|We\s|But\s|Howeve
 acronyms = "([A-Z][.][A-Z][.](?:[A-Z][.])?)"
 websites = "[.](com|net|org|io|gov)"
 
+
 def split_into_sentences(text):
+    if not text:
+        return []
+
     text = " " + text + "  "
     text = text.replace("\n", " ")
     text = re.sub(prefixes, "\\1<prd>", text)
@@ -31,8 +33,8 @@ def split_into_sentences(text):
     text = re.sub(caps + "[.]" + caps + "[.]" + caps + "[.]", "\\1<prd>\\2<prd>\\3<prd>", text)
     text = re.sub(caps + "[.]" + caps + "[.]", "\\1<prd>\\2<prd>", text)
     text = re.sub(" " + suffixes + "[.] " + starters, " \\1<stop> \\2", text)
-    text = re.sub(" " + suffixes + "[.]"," \\1<prd>", text)
-    text = re.sub(" " + caps + "[.]"," \\1<prd>", text)
+    text = re.sub(" " + suffixes + "[.]", " \\1<prd>", text)
+    text = re.sub(" " + caps + "[.]", " \\1<prd>", text)
     if "”" in text: text = text.replace(".”", "”.")
     if "\"" in text: text = text.replace(".\"", "\".")
     if "!" in text: text = text.replace("!\"", "\"!")

@@ -44,15 +44,23 @@ def find_state_from_coords(lat, long) -> str:
 
         res = search.by_coordinate(lat, long, radius=30)
 
+        if not res:
+            return None
+
         # get zipcode based on lat / long
         zipcode = res[0]['Zipcode']
+
+        print(zipcode)
+
+        if not zipcode:
+            return None
 
         # use zipcode object to determine state
         zipcode_object = search.by_zipcode(zipcode)
 
-        city = zipcode_object['State']  # NY
+        state = zipcode_object['State']  # NY
 
-        return city
+        return state
 
 
 def chase_lookup(**kwargs):

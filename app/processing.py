@@ -63,10 +63,16 @@ def process_user_message(current_user: User) -> None:
         return
 
     if 'TEST' in most_recent_message:
+
+        if current_user.state is None:
+            current_user.send_text("I don't know where you live, send location?")
+            current_user.request_location()
+            return
+
         # debugging mode, send request for location
         query = most_recent_message.split(' ')[1]
 
-        # ask the intern to figure it out.
+        # send query to intern
         laws = utils.chase_lookup(query=query,
                                   state=current_user.state)
 
