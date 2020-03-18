@@ -14,7 +14,7 @@ cytoolz==0.8.2
 dill==0.2.7.1
 docutils==0.14
 en-core-web-md==2.0.0
-Flask==0.12.2
+Flask==1.0
 ftfy==4.4.3
 future==0.16.0
 gevent==1.2.2
