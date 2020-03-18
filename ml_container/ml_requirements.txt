@@ -62,7 +62,7 @@ tqdm==4.19.6
 Twisted==17.9.0
 typing==3.6.4
 ujson==1.35
-urllib3==1.22
+urllib3==1.24.2
 wcwidth==0.1.7
 Werkzeug==0.14.1
 wit==5.0.0
