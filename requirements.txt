@@ -24,7 +24,7 @@ py==1.5.3
 Pygments==2.2.0
 pytest==3.5.1
 pytest-cov==2.5.1
-requests==2.18.4
+requests==2.20.0
 six==1.11.0
 typing==3.6.4
 urllib3==1.22
