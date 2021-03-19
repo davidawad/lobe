@@ -25,7 +25,7 @@ hyperlink==18.0.0
 idna==2.6
 incremental==17.5.0
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 jmespath==0.9.3
 jsonschema==2.6.0
 klein==17.10.0
