@@ -1,6 +1,6 @@
 attrs==18.1.0
 blessings==1.7
-bottle==0.12.13
+bottle==0.12.19
 bpython==0.17.1
 certifi==2018.1.18
 chardet==3.0.4
