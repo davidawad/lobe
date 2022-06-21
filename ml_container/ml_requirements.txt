@@ -35,7 +35,7 @@ mitie==0.2.0
 msgpack-numpy==0.4.1
 msgpack-python==0.5.4
 murmurhash==0.28.0
-numpy==1.14.1
+numpy==1.22.0
 pathlib==1.0.1
 plac==0.9.6
 preshed==1.0.0
